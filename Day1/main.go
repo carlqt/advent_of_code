@@ -18,11 +18,9 @@ func fetchInput() (modules Modules) {
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
-		m := Module{}
-
 		line := scanner.Text()
 		i, err := strconv.Atoi(line)
-		m.Mass = i
+		m := Module{i}
 		modules = append(modules, m)
 
 		if err != nil {
