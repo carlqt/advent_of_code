@@ -16,10 +16,11 @@ func main() {
 		endSlice := i + 4
 		command := inputs[i:endSlice]
 
-		code := execute(command, inputs)
-
-		if code == 99 {
+		if command[0] == 99 {
+			log.Printf("Exiting")
 			break
+		} else {
+			execute(command, inputs)
 		}
 	}
 
@@ -63,11 +64,11 @@ func formatToInt(record []string) []int {
 	return result
 }
 
-func execute(command []int, intCodeInput []int) (opcode int) {
+func execute(command []int, intCodeInput []int) {
 	log.Printf("Executing %v\n", command)
 
 	var result int
-	opcode = command[0]
+	opcode := command[0]
 
 	indexOfInput1 := command[1]
 	indexOfInput2 := command[2]
@@ -75,10 +76,7 @@ func execute(command []int, intCodeInput []int) (opcode int) {
 	input2 := intCodeInput[indexOfInput2]
 	position := command[3]
 
-	if opcode == 99 {
-		log.Printf("Exiting")
-		return
-	} else if opcode == 1 {
+	if opcode == 1 {
 		result = input1 + input2
 	} else if opcode == 2 {
 		result = input1 * input2
@@ -87,6 +85,4 @@ func execute(command []int, intCodeInput []int) (opcode int) {
 	}
 
 	intCodeInput[position] = result
-
-	return
 }
