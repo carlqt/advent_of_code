@@ -12,7 +12,18 @@ import (
 func main() {
 	inputs := intCodeInput("input.csv")
 
-	fmt.Println(len(inputs))
+	for i := 0; i < len(inputs); i = i + 4 {
+		endSlice := i + 4
+		command := inputs[i:endSlice]
+
+		code := execute(command, inputs)
+
+		if code == 99 {
+			break
+		}
+	}
+
+	fmt.Println(inputs[0])
 }
 
 func intCodeInput(url string) []int {
@@ -52,9 +63,11 @@ func formatToInt(record []string) []int {
 	return result
 }
 
-func execute(command []int, intCodeInput []int) {
+func execute(command []int, intCodeInput []int) (opcode int) {
+	log.Printf("Executing %v\n", command)
+
 	var result int
-	opcode := command[0]
+	opcode = command[0]
 
 	indexOfInput1 := command[1]
 	indexOfInput2 := command[2]
@@ -63,14 +76,17 @@ func execute(command []int, intCodeInput []int) {
 	position := command[3]
 
 	if opcode == 99 {
+		log.Printf("Exiting")
 		return
 	} else if opcode == 1 {
 		result = input1 + input2
 	} else if opcode == 2 {
 		result = input1 * input2
 	} else {
-		log.Fatal("Unknown opcode")
+		log.Printf("Unknown opcode %d for command %v", opcode, command)
 	}
 
 	intCodeInput[position] = result
+
+	return
 }
