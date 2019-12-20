@@ -9,36 +9,22 @@ import (
 	"strconv"
 )
 
-type Instruction struct {
-	Opcode     int
-	Parameters []int
-}
-
-func NewInstruction(inputs []int) Instruction {
-	var instruction Instruction
-
-	instruction.Opcode = inputs[0]
-	instruction.Parameters = inputs[1:4]
-
-	return instruction
-}
-
 func main() {
-	inputs := intCodeInput("input.csv")
+	memory := intCodeInput("input.csv")
 
-	for i := 0; i < len(inputs); i = i + 4 {
+	for i := 0; i < len(memory); i = i + 4 {
 		endSlice := i + 4
-		command := inputs[i:endSlice]
+		instruction := NewInstruction(memory[i:endSlice], memory)
 
-		if command[0] == 99 {
+		if instruction.Halt() {
 			log.Printf("Exiting")
 			break
 		} else {
-			execute(command, inputs)
+			instruction.Execute(memory)
 		}
 	}
 
-	fmt.Println(inputs[0])
+	fmt.Println(memory[0])
 }
 
 func intCodeInput(url string) []int {
@@ -76,27 +62,4 @@ func formatToInt(record []string) []int {
 	}
 
 	return result
-}
-
-func execute(command []int, intCodeInput []int) {
-	log.Printf("Executing %v\n", command)
-
-	var result int
-	opcode := command[0]
-
-	indexOfInput1 := command[1]
-	indexOfInput2 := command[2]
-	input1 := intCodeInput[indexOfInput1]
-	input2 := intCodeInput[indexOfInput2]
-	position := command[3]
-
-	if opcode == 1 {
-		result = input1 + input2
-	} else if opcode == 2 {
-		result = input1 * input2
-	} else {
-		log.Printf("Unknown opcode %d for command %v", opcode, command)
-	}
-
-	intCodeInput[position] = result
 }
