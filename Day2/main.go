@@ -9,6 +9,20 @@ import (
 	"strconv"
 )
 
+type Instruction struct {
+	Opcode     int
+	Parameters []int
+}
+
+func NewInstruction(inputs []int) Instruction {
+	var instruction Instruction
+
+	instruction.Opcode = inputs[0]
+	instruction.Parameters = inputs[1:4]
+
+	return instruction
+}
+
 func main() {
 	inputs := intCodeInput("input.csv")
 
