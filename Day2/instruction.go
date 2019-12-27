@@ -41,7 +41,7 @@ func (i *Instruction) Execute(memory []int) {
 		return
 	}
 
-	log.Printf("Executing %v - %d\n", i.inputs, i.result())
+	// log.Printf("Executing %v - %d\n", i.inputs, i.result())
 
 	memory[i.PositionResult] = i.result()
 }

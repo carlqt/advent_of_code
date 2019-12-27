@@ -9,22 +9,46 @@ import (
 	"strconv"
 )
 
+const EXPECTED_RESULT = 19690720
+
 func main() {
 	memory := intCodeInput("input.csv")
 
+	bruteForceInput(memory)
+}
+func bruteForceInput(memory []int) {
+	for noun := 0; noun <= 99; noun++ {
+		for verb := 0; verb <= 99; verb++ {
+			newMemory := make([]int, len(memory))
+			copy(newMemory, memory)
+
+			newMemory[1] = x
+			newMemory[2] = y
+
+			address := execute(newMemory)
+
+			if address == EXPECTED_RESULT {
+				result := 100*newMemory[1] + newMemory[2]
+				fmt.Println(result)
+				return
+			}
+		}
+	}
+}
+
+func execute(memory []int) int {
 	for i := 0; i < len(memory); i = i + 4 {
 		endSlice := i + 4
 		instruction := NewInstruction(memory[i:endSlice], memory)
 
 		if instruction.Halt() {
-			log.Printf("Exiting")
 			break
 		} else {
 			instruction.Execute(memory)
 		}
 	}
 
-	fmt.Println(memory[0])
+	return memory[0]
 }
 
 func intCodeInput(url string) []int {
