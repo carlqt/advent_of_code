@@ -46,22 +46,57 @@ func instructions(input []byte) []string {
 func (w *Wire) draw(instruction string) {
 	direction := string(instruction[0])
 	displacement, _ := strconv.Atoi(instruction[1:])
-	point := w.CurrentPoint()
-	x := point[0]
-	y := point[1]
 
 	switch direction {
 	case "U":
-		y = y + displacement
+		w.Up(displacement)
 	case "D":
-		y = y - displacement
+		w.Down(displacement)
 	case "L":
-		x = x - displacement
+		w.Left(displacement)
 	default:
-		x = x + displacement
+		w.Right(displacement)
 	}
+}
 
-	w.Points = append(w.Points, [2]int{x, y})
+func (w *Wire) Up(steps int) {
+	point := w.CurrentPoint()
+	y := point[1]
+	x := point[0]
+
+	for ; y <= steps; y++ {
+		w.Points = append(w.Points, [2]int{x, y})
+	}
+}
+
+func (w *Wire) Down(steps int) {
+	point := w.CurrentPoint()
+	y := point[1]
+	x := point[0]
+
+	for ; y >= steps; y-- {
+		w.Points = append(w.Points, [2]int{x, y})
+	}
+}
+
+func (w *Wire) Left(steps int) {
+	point := w.CurrentPoint()
+	y := point[1]
+	x := point[0]
+
+	for ; x >= steps; x-- {
+		w.Points = append(w.Points, [2]int{x, y})
+	}
+}
+
+func (w *Wire) Right(steps int) {
+	point := w.CurrentPoint()
+	y := point[1]
+	x := point[0]
+
+	for ; x <= steps; x++ {
+		w.Points = append(w.Points, [2]int{x, y})
+	}
 }
 
 func (w Wire) CurrentPoint() [2]int {

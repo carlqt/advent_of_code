@@ -31,8 +31,17 @@ func shortestDistance(points [][2]int) int {
 	var distance int
 	centralPoint := [2]int{0, 0}
 
-	for _, point := range points {
+	for index, point := range points {
+		if point == centralPoint {
+			continue
+		}
+
 		pointDistance := calculateDistance(point, centralPoint)
+
+		if index == 0 {
+			distance = pointDistance
+		}
+
 		if distance > pointDistance {
 			distance = pointDistance
 		}
