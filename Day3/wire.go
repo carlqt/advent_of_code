@@ -8,9 +8,11 @@ import (
 	"strings"
 )
 
-type Wire struct {
-	Points [][2]int
-}
+// type Wire struct {
+// 	Points []Point
+// }
+
+type Wire []Point
 
 func NewWire(path string) Wire {
 	var wire Wire
@@ -43,6 +45,18 @@ func instructions(input []byte) []string {
 	return strings.Split(trimmedString, ",")
 }
 
+func (w *Wire) CurrentPoint() [2]int {
+	if w.Length() == 0 {
+		return Point{0, 0}
+	}
+
+	return (*w)[w.Length()-1]
+}
+
+func (w *Wire) Length() int {
+	return len(*w)
+}
+
 func (w *Wire) draw(instruction string) {
 	direction := string(instruction[0])
 	displacement, _ := strconv.Atoi(instruction[1:])
@@ -69,7 +83,7 @@ func (w *Wire) Up(steps int) {
 			continue
 		}
 
-		w.Points = append(w.Points, [2]int{x, y})
+		*w = append(*w, Point{x, y})
 	}
 }
 
@@ -83,7 +97,7 @@ func (w *Wire) Down(steps int) {
 			continue
 		}
 
-		w.Points = append(w.Points, [2]int{x, y})
+		*w = append(*w, Point{x, y})
 	}
 }
 
@@ -97,7 +111,7 @@ func (w *Wire) Left(steps int) {
 			continue
 		}
 
-		w.Points = append(w.Points, [2]int{x, y})
+		*w = append(*w, Point{x, y})
 	}
 }
 
@@ -111,14 +125,6 @@ func (w *Wire) Right(steps int) {
 			continue
 		}
 
-		w.Points = append(w.Points, [2]int{x, y})
+		*w = append(*w, Point{x, y})
 	}
-}
-
-func (w Wire) CurrentPoint() [2]int {
-	if len(w.Points) == 0 {
-		return [2]int{0, 0}
-	}
-
-	return w.Points[len(w.Points)-1]
 }
