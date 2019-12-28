@@ -29,7 +29,6 @@ func NewWire(path string) Wire {
 
 	// Read each value and try to draw the points
 	// instructions := string(b)
-	// fmt.Println(instructions)
 
 	for _, instruction := range instructions(b) {
 		wire.draw(instruction)
@@ -40,7 +39,8 @@ func NewWire(path string) Wire {
 
 func instructions(input []byte) []string {
 	stringInput := string(input)
-	return strings.Split(stringInput, ",")
+	trimmedString := strings.TrimSuffix(stringInput, "\n")
+	return strings.Split(trimmedString, ",")
 }
 
 func (w *Wire) draw(instruction string) {
@@ -64,7 +64,11 @@ func (w *Wire) Up(steps int) {
 	y := point[1]
 	x := point[0]
 
-	for ; y <= steps; y++ {
+	for ; y <= point[1]+steps; y++ {
+		if point[1] == y {
+			continue
+		}
+
 		w.Points = append(w.Points, [2]int{x, y})
 	}
 }
@@ -74,7 +78,11 @@ func (w *Wire) Down(steps int) {
 	y := point[1]
 	x := point[0]
 
-	for ; y >= steps; y-- {
+	for ; y >= point[1]-steps; y-- {
+		if point[1] == y {
+			continue
+		}
+
 		w.Points = append(w.Points, [2]int{x, y})
 	}
 }
@@ -84,7 +92,11 @@ func (w *Wire) Left(steps int) {
 	y := point[1]
 	x := point[0]
 
-	for ; x >= steps; x-- {
+	for ; x >= point[0]-steps; x-- {
+		if point[0] == x {
+			continue
+		}
+
 		w.Points = append(w.Points, [2]int{x, y})
 	}
 }
@@ -94,7 +106,11 @@ func (w *Wire) Right(steps int) {
 	y := point[1]
 	x := point[0]
 
-	for ; x <= steps; x++ {
+	for ; x <= point[0]+steps; x++ {
+		if point[0] == x {
+			continue
+		}
+
 		w.Points = append(w.Points, [2]int{x, y})
 	}
 }
